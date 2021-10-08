@@ -1,0 +1,2 @@
+{'box': (186, 22, 89, 89), 'emotions': {'angry': 0.08, 'disgust': 0.0, 'fear': 0.16, 'happy': 0.0, 'sad': 0.43, 'surprise': 0.0, 'neutral': 0.32}}
+ 
