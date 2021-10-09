@@ -1,34 +1,27 @@
 from img_viewer import *
 from tkinter import *
+from measure_face import *
 from PIL import ImageTk, Image
 import os
+from pathlib import Path
 
 
+def listdir_nohidden(path):
+    # Exclude all with . in the start
+    return [i for i in os.listdir(path) if i[0] != "."]
+
+
+# To configure, add a list of image paths into List_images, and the while loop and imgViewer will do the rest
 List_images = []
-for p in os.listdir('../FaceismRatioCalculator'):
+for p in listdir_nohidden('../FaceismRatioCalculator'):
     if os.path.isdir(p):
-        for folder in os.listdir(p):
-            if folder != '.DS_Store':
-                for file in os.listdir('../FaceismRatioCalculator' + '/' + p + '/' + folder):
-                    if file == 'LQ.png':
-                        List_images.append(
-                            '../FaceismRatioCalculator' + '/' + p + '/' + folder + '/' + file)
+        for folder in listdir_nohidden(p):
+            print(folder)
+            for file in listdir_nohidden('../FaceismRatioCalculator' + '/' + p + '/' + folder):
+                print(file)
+                if file == 'LQ.png':
+                    List_images.append(
+                        '../FaceismRatioCalculator' + '/' + p + '/' + folder + '/' + file)
 
-i = 0
-while i <= len(List_images):
-    t = imgViewer(List_images[i])
-    t.createFrame()
-    if t.face_exists():
-        points = t.get_face_points()
-        print(points)
-        top_head = points[0]
-        bottom_chin = points[1]
-        bottom_torso = points[2]
-        # [] is x value [1] is y value
-        ratio = (bottom_chin[1] - top_head[1]) / \
-            (bottom_torso[1] - top_head[1])
-        f = open(str(List_images[i]).replace(
-            "LQ.png", "") + 'faceismRatio.txt', "w")
-        f.write(str(ratio))
-        f.close()
-    i += 1
+
+MeasureFace(List_images).measure_picture_list()
